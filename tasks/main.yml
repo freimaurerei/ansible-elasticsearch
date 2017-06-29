@@ -44,6 +44,13 @@
 
 - meta: flush_handlers
 
+- name: Debian - Ensure it's enabled on startup
+  lineinfile:
+    path: /etc/default/{{ es_instance_name }}_elasticsearch
+    regexp: '^START_DAEMON='
+    line: 'START_DAEMON=true'
+  notify: restart elasticsearch
+
 - name: Wait for elasticsearch to startup
   wait_for: host={{es_api_host}} port={{es_api_port}} delay=5 connect_timeout=1
 
